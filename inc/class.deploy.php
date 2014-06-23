@@ -128,8 +128,11 @@ abstract class Deploy {
 	 * @param 	array 	$repo 	The repository info. See class block for docs.
 	 */
 	protected function __construct( $name, $repo ) {
-		$this->_path = realpath( $repo['path'] ) . DIRECTORY_SEPARATOR;
-
+		if (realpath($repo['path'])) {
+			$this->_path = realpath( $repo['path'] ) . DIRECTORY_SEPARATOR;
+		} else {
+			$this->_path = $repo['path'] . DIRECTORY_SEPARATOR;
+		}
 		$this->_name = $name;
 
 		$available_options = array( 'branch', 'remote', 'commit', 'post_deploy' );
