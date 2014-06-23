@@ -25,7 +25,7 @@ class BitBucket_Deploy extends Deploy {
                 $branch = $payload['commits'][0]['branch'];
                 $this->log( $branch );
                 if ( isset( parent::$repos[ $name ] ) ) {
-                        $data = parent::$repos[ $name ];
+			$data = parent::$repos[ $name ];
                         $data['commit'] = $payload['commits'][0]['node'];
                         if (is_array($data['branch'])) {
                                 foreach ($data['branch'] as $br => $pa) {
