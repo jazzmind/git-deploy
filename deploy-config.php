@@ -25,6 +25,19 @@
  * full path in the 'path' option for that repo. The optional callback will allow
  * you to ping something else as well such as hitting a DB update script or any
  * other configuration you may need to do for the newly deployed code.
+ * 
+ * NEW: 'branch' can be an associative array:
+ *  		'branch' => array ('release/v1.1' => '/var/www/html/v1.1')
+ * This allows you to deploy different branches of the same repository to different directories.
+ * 
+ * Also, if your commit is to release/v1.1.1, it will match that to the most specific option. E.g.:
+ *  		'branch' => array (
+ * 			'master' => '/var/www/html/master',
+ * 			'release/v1.1.2' => '/var/www/html/v1.1.2',
+ *  			'release/v1.1' => '/var/www/html/v1.1'
+ * 			)
+ * Will push commits against release v1.1.1 and v1.1.3 etc. to /var/www/html/v1.1.1
+ * Note that order matters - it will match the first thing it can, so put your more specific matches first.
  */
 $repos = array(
 	/*'examplerepo' => array(
