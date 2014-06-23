@@ -30,11 +30,13 @@ class BitBucket_Deploy extends Deploy {
                                 foreach ($data['branch'] as $br => $pa) {
                                 	if (strpos($branch, $br) === 0 ) {
                                         	$data['path'] = $pa;
+                                        	$data['branch'] = $branch;
                                         	parent::__construct( $name, $data );
                                         	return;
                                     	}
                                 }
                         } else if (strpos($branch, $data['branch']) === 0) {
+                        	$data['branch'] = $branch;
                                 parent::__construct($name, $data);
                                 return;
                         }
