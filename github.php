@@ -26,22 +26,21 @@ class GitHub_Deploy extends Deploy {
 		$branch = basename( $payload->ref );
 		$commit = substr( $payload->commits[0]->id, 0, 12 );
                 $this->log( $branch );
-                if ( isset( parent::$repos[ $name ] ) ) {
+		if ( isset( parent::$repos[ $name ] ) ) {
 			$data = parent::$repos[ $name ];
                         $data['commit'] = $commit
-                        if (is_array($data['branch'])) {
-                                foreach ($data['branch'] as $br => $pa) {
-                                    if (strpos($branch, $br) === 0 ) {
-                                        $data['path'] = $pa;
-                                        parent::__construct( $name, $data );
-                                        return;
-                                    }
-                                }
-                        } else if (strpos($branch, $data['branch']) === 0) {
+			if (is_array($data['branch'])) {
+				foreach ($data['branch'] as $br => $pa) {
+					if (strpos($branch, $br) === 0 ) {
+						$data['path'] = $pa;
+						parent::__construct( $name, $data );
+						return;
+					}
+				}
+			} else if (strpos($branch, $data['branch']) === 0) {
                                 parent::__construct($name, $data);
                                 return;
                         }
-                        unset($data);
                 }
         }
 }
