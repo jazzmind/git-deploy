@@ -19,16 +19,29 @@ class BitBucket_Deploy extends Deploy {
 	 *
 	 * @param 	string 	$payload 	The JSON encoded payload data.
 	 */
-	function __construct( $payload ) {
-		$payload = json_decode( stripslashes( $_POST['payload'] ), true );
-		$name = $payload['repository']['name'];
-		$this->log( $payload['commits'][0]['branch'] );
-		if ( isset( parent::$repos[ $name ] ) && parent::$repos[ $name ]['branch'] === $payload['commits'][0]['branch'] ) {
-			$data = parent::$repos[ $name ];
-			$data['commit'] = $payload['commits'][0]['node'];
-			parent::__construct( $name, $data );
-		}
-	}
+        function __construct( $payload ) {
+                $payload = json_decode( stripslashes( $_POST['payload'] ), true );
+                $name = $payload['repository']['name'];
+                $branch = $payload['commits'][0]['branch'];
+                $this->log( $payload['commits'][0]['branch'] );
+                if ( isset( parent::$repos[ $name ] ) ) {
+                        $data = parent::$repos[ $name ];
+                        $data['commit'] = $payload['commits'][0]['node'];
+                        if (is_array($data['branch'])) {
+                                foreach ($data['branch'] as $br => $pa) {
+                                	if (strpos($payload['commits'][0]['branch'], parent::$repos[ $name ]['branch']) === 0 ) {
+                                        	$data['path'] = $pa;
+                                        	parent::__construct( $name, $data );
+                                        	return;
+                                    	}
+                                }
+                        } else if (strpos($payload['commits'][0]['branch'], $data['branch']) === 0 {
+                                parent::__construct($name, $data);
+                                return;
+                        }
+                        unset($data);
+                }
+        }
 }
 // Start the deploy attempt.
 new BitBucket_Deploy( $_POST['payload'] );
