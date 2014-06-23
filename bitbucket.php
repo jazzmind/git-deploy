@@ -23,7 +23,6 @@ class BitBucket_Deploy extends Deploy {
                 $payload = json_decode( stripslashes( $_POST['payload'] ), true );
                 $name = $payload['repository']['name'];
                 $branch = $payload['commits'][0]['branch'];
-                $this->log( $branch );
                 if ( isset( parent::$repos[ $name ] ) ) {
 			$data = parent::$repos[ $name ];
                         $data['commit'] = $payload['commits'][0]['node'];
@@ -39,7 +38,9 @@ class BitBucket_Deploy extends Deploy {
                                 parent::__construct($name, $data);
                                 return;
                         }
+			$this->log( "Branch " . $branch . " not found in config." );
                 }
+		$this->log( "Repository " . $name . " not found in config." );
         }
 }
 // Start the deploy attempt.
