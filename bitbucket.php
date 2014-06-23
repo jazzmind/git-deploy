@@ -35,7 +35,7 @@ class BitBucket_Deploy extends Deploy {
                                         	return;
                                     	}
                                 }
-                        } else if (strpos($branch, $data['branch']) === 0 {
+                        } else if (strpos($branch, $data['branch']) === 0) {
                                 parent::__construct($name, $data);
                                 return;
                         }
