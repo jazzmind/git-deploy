@@ -20,17 +20,30 @@ class GitHub_Deploy extends Deploy {
 	 *
 	 * @param 	string 	$payload 	The JSON encoded payload data.
 	 */
-	function __construct( $payload ) {
+        function __construct( $payload ) {
 		$payload = json_decode( $_POST['payload'] );
 		$name = $payload->repository->name;
 		$branch = basename( $payload->ref );
 		$commit = substr( $payload->commits[0]->id, 0, 12 );
-		if ( isset( parent::$repos[ $name ] ) && parent::$repos[ $name ]['branch'] === $branch ) {
-			$data = parent::$repos[ $name ];
-			$data['commit'] = $commit;
-			parent::__construct( $name, $data );
-		}
-	}
+                $this->log( $branch );
+                if ( isset( parent::$repos[ $name ] ) ) {
+                        $data = parent::$repos[ $name ];
+                        $data['commit'] = $commit
+                        if (is_array($data['branch'])) {
+                                foreach ($data['branch'] as $br => $pa) {
+                                    if (strpos($branch, $br) === 0 ) {
+                                        $data['path'] = $pa;
+                                        parent::__construct( $name, $data );
+                                        return;
+                                    }
+                                }
+                        } else if (strpos($branch, $data['branch']) === 0 {
+                                parent::__construct($name, $data);
+                                return;
+                        }
+                        unset($data);
+                }
+        }
 }
 // Starts the deploy attempt.
 new GitHub_Deploy( $_POST['payload'] );
