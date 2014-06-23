@@ -197,7 +197,7 @@ abstract class Deploy {
 				call_user_func( $this->_post_deploy );
 
 			$message = '[SHA: ' . $this->_commit . '] Deployment of ' . $this->_name . ' from branch ' . $this->_branch . ' successful';
-			if (!empty($this->_message)) $message .= 'with commit message: \n' . $this->_message; else $message .= ' with no commit message.'
+			if (!empty($this->_message)) $message .= 'with commit message: \n' . $this->_message; else $message .= ' with no commit message.';
 			$this->log($message);
 			echo($message);
 		} catch ( Exception $e ) {
