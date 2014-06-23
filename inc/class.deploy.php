@@ -123,6 +123,11 @@ abstract class Deploy {
 	private $_commit;
 
 	/**
+	 * The commit message 
+	 */
+	private $_message;
+
+	/**
 	 * Sets up the repo information.
 	 * 
 	 * @param 	array 	$repo 	The repository info. See class block for docs.
@@ -135,7 +140,7 @@ abstract class Deploy {
 		}
 		$this->_name = $name;
 
-		$available_options = array( 'branch', 'remote', 'commit', 'post_deploy' );
+		$available_options = array( 'branch', 'remote', 'commit', 'post_deploy', 'message' );
 
 		foreach ( $repo as $option => $value ){
 			if ( in_array( $option, $available_options ) ){
@@ -191,8 +196,10 @@ abstract class Deploy {
 			if ( is_callable( $this->_post_deploy ) )
 				call_user_func( $this->_post_deploy );
 
-			$this->log( '[SHA: ' . $this->_commit . '] Deployment of ' . $this->_name . ' from branch ' . $this->_branch . ' successful' );
-			echo( '[SHA: ' . $this->_commit . '] Deployment of ' . $this->_name . ' from branch ' . $this->_branch . ' successful' );
+			$message = '[SHA: ' . $this->_commit . '] Deployment of ' . $this->_name . ' from branch ' . $this->_branch . ' successful';
+			if (!empty($this->_message)) $message .= 'with commit message: \n' . $this->_message; else $message .= ' with no commit message.'
+			$this->log($message);
+			echo($message);
 		} catch ( Exception $e ) {
 			$this->log( $e, 'ERROR' );
 		}
