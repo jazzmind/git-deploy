@@ -39,7 +39,6 @@ class BitBucket_Deploy extends Deploy {
                                 parent::__construct($name, $data);
                                 return;
                         }
-                        unset($data);
                 }
         }
 }
