@@ -28,7 +28,7 @@ class GitHub_Deploy extends Deploy {
                 $this->log( $branch );
 		if ( isset( parent::$repos[ $name ] ) ) {
 			$data = parent::$repos[ $name ];
-                        $data['commit'] = $commit
+                        $data['commit'] = $commit;
 			if (is_array($data['branch'])) {
 				foreach ($data['branch'] as $br => $pa) {
 					if (strpos($branch, $br) === 0 ) {
