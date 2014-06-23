@@ -27,7 +27,7 @@ class GitHub_Deploy extends Deploy {
 		$commit = substr( $payload->commits[0]->id, 0, 12 );
                 $this->log( $branch );
                 if ( isset( parent::$repos[ $name ] ) ) {
-                        $data = parent::$repos[ $name ];
+			$data = parent::$repos[ $name ];
                         $data['commit'] = $commit
                         if (is_array($data['branch'])) {
                                 foreach ($data['branch'] as $br => $pa) {
