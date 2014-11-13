@@ -172,8 +172,10 @@ abstract class Deploy {
 
 			// Write the message into the log file
 			// Format: time --- type: message
+			date_default_timezone_set( 'GMT' );
 			file_put_contents( $filename, date( self::$_date_format ) . ' --- ' . $type . ': ' . $message . PHP_EOL, FILE_APPEND );
 		}
+		exec( 'wall "' . date( self::$_date_format ) . ' --- ' . $type . ': ' . $message . '"' . PHP_EOL); 
 	}
 
 	/**
@@ -186,6 +188,9 @@ abstract class Deploy {
 
 			// Discard any changes to tracked files since our last deploy
 			exec( 'git reset --hard HEAD', $output );
+
+			// Sync branches
+			exec( 'git fetch --prune');
 
 			// Update the local repository
 			exec( 'git pull ' . $this->_remote . ' ' . $this->_branch, $output );

@@ -1,6 +1,8 @@
 <?php
+$post = file_get_contents("php://input");
+
 // Make sure we have a payload, stop if we do not.
-if( ! isset( $_POST['payload'] ) )
+if( ! isset( $post ) )
 	die( '<h1>No payload present</h1><p>A GitHub POST payload is required to deploy from this script.</p>' );
 
 /**
@@ -21,7 +23,8 @@ class GitHub_Deploy extends Deploy {
 	 * @param 	string 	$payload 	The JSON encoded payload data.
 	 */
         function __construct( $payload ) {
-		$payload = json_decode( $_POST['payload'] );
+		$payload = json_decode( $payload );
+		if (!isset($payload->repository)) die( '<h1>Invalid payload present</h1><p>A GitHub POST payload is required to deploy from this script.</p>' );
 		$name = $payload->repository->name;
 		$branch = basename( $payload->ref );
 		$commit = substr( $payload->commits[0]->id, 0, 12 );
@@ -45,4 +48,4 @@ class GitHub_Deploy extends Deploy {
         }
 }
 // Starts the deploy attempt.
-new GitHub_Deploy( $_POST['payload'] );
+new GitHub_Deploy( $post );
