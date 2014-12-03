@@ -195,6 +195,9 @@ abstract class Deploy {
 			// Update the local repository
 			exec( 'git pull ' . $this->_remote . ' ' . $this->_branch, $output );
 
+			// Update VERSION.txt with build info
+			exec('echo build ' . $this->_commit . ' >> VERSION.txt');
+
 			// Secure the .git directory
 			echo exec( 'chmod -R og-rx .git' );
 
